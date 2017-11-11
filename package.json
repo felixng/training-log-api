@@ -1,0 +1,28 @@
+{
+  "name": "jazzy-panda-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felixng/training-log-api.git"
+  },
+  "author": "Felix Ng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felixng/training-log-api/issues"
+  },
+  "homepage": "https://github.com/felixng/training-log-api#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "mongodb": "^2.2.33"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
+}
