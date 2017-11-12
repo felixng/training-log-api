@@ -1,4 +1,17 @@
 var ObjectID = require('mongodb').ObjectID;
+var moment = require('moment');
+
+var findUser = (db, auth0Id, callback) => {
+    db.collection('users').findOne({'auth0Id': auth0Id}, (err, result) => {
+        if (err) {
+            callback(err); 
+        } else if (result == null) {
+            callback()
+        } else {
+            callback(null, result._id);
+        }
+    })
+}
 
 module.exports = function(app, db) {
     app.get('/weeks/:id', (req, res) => {
@@ -16,13 +29,23 @@ module.exports = function(app, db) {
     
     app.post('/weeks', (req, res) => {
         const week = req.body;
+        var auth0Id = req.body.auth0Id;
+        
+        findUser(db, auth0Id, (userId) => {
+            const id = req.params.id;
+            const details = { '_id': new ObjectID(id) };
 
-        db.collection('weeks').insert(week, (err, result) => {
-        if (err) { 
-            res.send({ 'error': 'An error has occurred' }); 
-        } else {
-            res.send(result.ops[0]);
-        }
+            if (!week.weekNumber){
+                week.weekNumber = moment().week();
+            }
+
+            db.collection('weeks').insert(week, (err, result) => {
+                if (err) { 
+                    res.send({ 'error': 'An error has occurred' }); 
+                } else {
+                    res.send(result.ops[0]);
+                }
+            });
         });
     });
 
