@@ -18,10 +18,15 @@
   "homepage": "https://github.com/felixng/training-log-api#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
+    "express-jwt": "^5.3.0",
+    "express-jwt-authz": "^1.0.0",
+    "jwks-rsa": "^1.2.1",
     "moment": "^2.19.1",
-    "mongodb": "^2.2.33"
+    "mongodb": "^2.2.33",
+    "morgan": "^1.9.0"
   },
   "devDependencies": {
     "nodemon": "^1.12.1"

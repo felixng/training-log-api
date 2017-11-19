@@ -13,8 +13,8 @@ var findUser = (db, auth0Id, callback) => {
     })
 }
 
-module.exports = function(app, db) {
-    app.get('/weeks/:id', (req, res) => {
+module.exports = function(app, db, checkJwt, checkScopes) {
+    app.get('/weeks/:id', checkJwt, checkScopes, (req, res) => {
         const id = req.params.id;
         const details = { '_id': new ObjectID(id) };
 
@@ -27,7 +27,7 @@ module.exports = function(app, db) {
         });        
     });
     
-    app.post('/weeks', (req, res) => {
+    app.post('/weeks', checkJwt, checkScopes, (req, res) => {
         const week = req.body;
         var auth0Id = req.body.auth0Id;
         
@@ -49,7 +49,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.post('/weeks/:id', (req, res) => {
+    app.post('/weeks/:id', checkJwt, checkScopes, (req, res) => {
         const id = req.params.id;
         const details = { '_id': new ObjectID(id) };
         const week = req.body;
@@ -64,7 +64,7 @@ module.exports = function(app, db) {
     });
     
 
-    app.delete('/weeks/:id', (req, res) => {
+    app.delete('/weeks/:id', checkJwt, checkScopes, (req, res) => {
         const id = req.params.id;
         const details = { '_id': new ObjectID(id) };
         db.collection('weeks').remove(details, (err, item) => {

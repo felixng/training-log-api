@@ -1,7 +1,7 @@
 var ObjectID = require('mongodb').ObjectID;
 
-module.exports = function(app, db) {
-    app.get('/users/:id', (req, res) => {
+module.exports = function(app, db, checkJwt, checkScopes) {
+    app.get('/users/:id', checkJwt, checkScopes, (req, res) => {
         const id = req.params.id;
         const details = { '_id': new ObjectID(id) };
 
@@ -14,7 +14,7 @@ module.exports = function(app, db) {
         });        
     });
     
-    app.post('/users', (req, res) => {
+    app.post('/users', checkJwt, checkScopes, (req, res) => {
         const user = req.body;
 
         db.collection('users').insert(user, (err, result) => {
@@ -26,7 +26,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.post('/users/:id', (req, res) => {
+    app.post('/users/:id', checkJwt, checkScopes, (req, res) => {
         const id = req.params.id;
         const details = { '_id': new ObjectID(id) };
         const user = req.body;
@@ -41,7 +41,7 @@ module.exports = function(app, db) {
     });
     
 
-    app.delete('/users/:id', (req, res) => {
+    app.delete('/users/:id', checkJwt, checkScopes, (req, res) => {
         const id = req.params.id;
         const details = { '_id': new ObjectID(id) };
         db.collection('users').remove(details, (err, item) => {

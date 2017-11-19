@@ -12,8 +12,8 @@ var findUser = (db, auth0Id, callback) => {
     })
 }
 
-module.exports = function(app, db) {
-    app.get('/sessions/:id', (req, res) => {
+module.exports = function(app, db, checkJwt, checkScopes) {
+    app.get('/sessions/:id', checkJwt, checkScopes, (req, res) => {
         const id = req.params.id;
         const details = { '_id': new ObjectID(id) };
 
@@ -26,7 +26,7 @@ module.exports = function(app, db) {
         });        
     });
     
-    app.post('/sessions', (req, res) => {
+    app.post('/sessions', checkJwt, checkScopes, (req, res) => {
         const session = req.body;
         const auth0Id = session.auth0Id;
 
@@ -47,7 +47,7 @@ module.exports = function(app, db) {
         })
     });
 
-    app.post('/sessions/:id', (req, res) => {
+    app.post('/sessions/:id', checkJwt, checkScopes, (req, res) => {
         const id = req.params.id;
         const details = { '_id': new ObjectID(id) };
         const session = req.body;
@@ -62,7 +62,7 @@ module.exports = function(app, db) {
     });
     
 
-    app.delete('/sessions/:id', (req, res) => {
+    app.delete('/sessions/:id', checkJwt, checkScopes, (req, res) => {
         const id = req.params.id;
         const details = { '_id': new ObjectID(id) };
         db.collection('sessions').remove(details, (err, item) => {
